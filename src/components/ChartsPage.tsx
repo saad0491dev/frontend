@@ -24,20 +24,20 @@ export default function ChartsPage({ selectedDevice, selectedHierarchy }: Charts
   useEffect(() => {
     // Load chart data when a device or hierarchy is selected
     if (selectedDevice && !selectedHierarchy) {
-      loadDeviceChartData(selectedDevice.id);
+      loadDeviceChartData(String(selectedDevice.id));
       setHierarchyChartData(null); // Clear hierarchy data
     } else if (selectedHierarchy && !selectedDevice) {
-      loadHierarchyChartData(selectedHierarchy.id);
+      loadHierarchyChartData(String(selectedHierarchy.id));
       setChartData(null); // Clear device data
     }
   }, [selectedDevice, selectedHierarchy, timeRange, token]);
 
-  const loadDeviceChartData = async (deviceId: string | number) => {
+  const loadDeviceChartData = async (deviceId: string) => {
     if (!token) return;
     
     setIsLoading(true);
     try {
-      const response = await apiService.getDeviceChartData(String(deviceId), timeRange, token);
+      const response = await apiService.getDeviceChartData(deviceId, timeRange, token);
       if (response.success && response.data) {
         setChartData(response.data);
       }

@@ -40,13 +40,8 @@ export default function WFRChart({ chartData, hierarchyChartData }: WFRChartProp
       }));
     }
     
-    // Fallback data
-    return [
-      { time: '14:25:48', line: 12000, standard: 11800 },
-      { time: '14:25:50', line: 9500, standard: 9400 },
-      { time: '14:25:52', line: 9800, standard: 9700 },
-      { time: '14:25:54', line: 7000, standard: 6900 },
-    ];
+    // Return empty array if no data
+    return [];
   }, [chartData, hierarchyChartData]);
 
   const latestValue = data.length > 0 ? data[data.length - 1].line : 0;
@@ -78,6 +73,23 @@ export default function WFRChart({ chartData, hierarchyChartData }: WFRChartProp
         </div>
       </div>
 
+      {data.length === 0 ? (
+        <div className="flex items-center justify-center h-80">
+          <div className="text-center">
+            <p className={`text-lg font-medium ${
+              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+            }`}>
+              No WFR data available
+            </p>
+            <p className={`text-sm ${
+              theme === 'dark' ? 'text-gray-500' : 'text-gray-500'
+            }`}>
+              This device type may not support water flow rate measurements
+            </p>
+          </div>
+        </div>
+      ) : (
+        <>
       <div className="flex gap-6 py-3 text-sm">
         <div className="flex items-center gap-2">
           <span className="w-4 h-[2px] bg-pink-500 rounded" />
@@ -151,6 +163,8 @@ export default function WFRChart({ chartData, hierarchyChartData }: WFRChartProp
           />
         </LineChart>
       </ResponsiveContainer>
+        </>
+      )}
     </div>
   );
 }
